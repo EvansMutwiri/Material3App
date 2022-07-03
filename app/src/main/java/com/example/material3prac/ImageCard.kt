@@ -1,5 +1,7 @@
 package com.example.material3prac
 
+import android.content.Intent
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import coil.compose.rememberAsyncImagePainter
@@ -12,6 +14,7 @@ import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import kotlin.random.Random
 
@@ -22,6 +25,7 @@ fun ImageCard(
     description: String,
     modifier: Modifier = Modifier,
 ) {
+    val mycontext = LocalContext.current
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
@@ -57,7 +61,9 @@ fun ImageCard(
                 horizontalArrangement = Arrangement.SpaceAround,
                 
             ) {
-                AssistChip(onClick = { /*TODO*/ },
+                AssistChip(onClick = {
+                    Toast.makeText(mycontext, "Liked", Toast.LENGTH_SHORT).show()
+                                     },
                 colors = AssistChipDefaults.assistChipColors(
                     leadingIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 ),
@@ -76,7 +82,12 @@ fun ImageCard(
                 },
                 )
 
-                AssistChip(onClick = { /*TODO*/ },
+                AssistChip(onClick = {
+                    val intent = Intent(Intent.ACTION_SEND)
+                    intent.type = "image/*"
+                    intent.putExtra(Intent.EXTRA_STREAM, "https://picsum.photos/seed/${Random.nextInt()}/600/400")
+                    mycontext.startActivity(intent)
+                },
                     colors = AssistChipDefaults.assistChipColors(
                         leadingIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                     ),
